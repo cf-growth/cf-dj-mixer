@@ -7,10 +7,18 @@ import { generateDemoTracks } from './utils/generateDemoTracks'
 const CTA_URL = 'https://studio.creativefabrica.com/ai-music-generator/ref/21659269/'
 const CTA_TEXT = 'Generate More AI Tracks in Studio AI →'
 
+function gaEvent(name, params = {}) {
+  if (typeof window !== 'undefined' && window.gtag) {
+    window.gtag('event', name, params)
+    if (name === 'cta_clicked') window.gtag('event', 'generate_lead', params)
+  } else {
+    console.log('GA4:', name, params)
+  }
+}
+
 function CTAButton({ className = '' }) {
   const handleClick = () => {
-    // GA4 stub
-    console.log('GA4 Event: cta_clicked', { destination: CTA_URL })
+    gaEvent('cta_clicked', { tool: 'cf-dj-mixer', destination: CTA_URL })
   }
 
   return (
@@ -166,6 +174,76 @@ function App() {
         {/* CTA Below Tool */}
         <section className="text-center mb-16">
           <CTAButton />
+        </section>
+
+        {/* Chrome Extension */}
+        <section className="mb-16">
+          <div className="bg-slate-800 rounded-xl p-6 md:p-8 border border-purple-500/30">
+            <div className="flex flex-col md:flex-row items-start gap-6">
+              {/* Icon */}
+              <div className="w-14 h-14 bg-gradient-to-br from-purple-600 to-pink-600 rounded-xl flex items-center justify-center shrink-0">
+                <svg className="w-7 h-7 text-white" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M3 5a2 2 0 012-2h10a2 2 0 012 2v8a2 2 0 01-2 2h-2.22l.123.489.804.804A1 1 0 0113 18H7a1 1 0 01-.707-1.707l.804-.804L7.22 15H5a2 2 0 01-2-2V5zm5.771 7H5V5h10v7H8.771z" clipRule="evenodd" />
+                </svg>
+              </div>
+
+              {/* Content */}
+              <div className="flex-1">
+                <div className="flex items-center gap-2 mb-1">
+                  <h2 className="text-xl font-bold">Load CF Studio Tracks Instantly</h2>
+                  <span className="text-xs bg-purple-600/40 text-purple-300 border border-purple-500/40 rounded-full px-2 py-0.5 font-medium">Chrome Extension</span>
+                </div>
+                <p className="text-slate-400 mb-5">
+                  Install the free browser extension to add a "Load in DJ Mixer" button directly on Studio AI track pages. One click loads the track, artwork, and artist info into whichever deck you choose — no copy-pasting URLs.
+                </p>
+
+                {/* Steps */}
+                <ol className="space-y-3 mb-5">
+                  <li className="flex gap-3">
+                    <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">1</span>
+                    <div>
+                      <p className="text-slate-200 text-sm font-medium">
+                        <a
+                          href="/cf-studio-ext.zip"
+                          download
+                          className="text-purple-400 hover:text-purple-300 underline underline-offset-2"
+                        >
+                          Download the extension
+                        </a>
+                        {' '}and unzip it
+                      </p>
+                      <p className="text-slate-500 text-xs mt-0.5">You'll get a folder called <code className="bg-slate-700 px-1 rounded">cf-studio-ext</code>. Keep it somewhere permanent — Chrome loads it from disk.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">2</span>
+                    <div>
+                      <p className="text-slate-200 text-sm font-medium">Open Chrome Extensions</p>
+                      <p className="text-slate-500 text-xs mt-0.5">Go to <code className="bg-slate-700 px-1 rounded">chrome://extensions</code> and turn on <strong className="text-slate-300">Developer mode</strong> (top-right toggle).</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">3</span>
+                    <div>
+                      <p className="text-slate-200 text-sm font-medium">Load Unpacked</p>
+                      <p className="text-slate-500 text-xs mt-0.5">Click <strong className="text-slate-300">Load unpacked</strong> and select the <code className="bg-slate-700 px-1 rounded">cf-studio-ext</code> folder.</p>
+                    </div>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold flex items-center justify-center shrink-0 mt-0.5">4</span>
+                    <div>
+                      <p className="text-slate-200 text-sm font-medium">Visit any Studio AI track page</p>
+                      <p className="text-slate-500 text-xs mt-0.5">Open a track on <code className="bg-slate-700 px-1 rounded">studio.creativefabrica.com/ai-music-generator/</code> — press Play on the track, then click the <strong className="text-slate-300">🎛 Load in DJ Mixer</strong> button that appears in the bottom-right corner.</p>
+                    </div>
+                  </li>
+                </ol>
+
+                <p className="text-slate-500 text-xs">
+                  The extension only runs on Studio AI track pages. It reads no personal data and makes no network requests of its own.
+                </p>
+              </div>
+            </div>
+          </div>
         </section>
 
         {/* How It Works */}
